@@ -23,6 +23,11 @@ module ActiveRecord # :nodoc:
           decrypted_values[temp_sentry.attr_name] = out unless out == "*encrypted*" # This is from Strongbox
           out
         end
+        
+        define_method("set_#{temp_sentry.crypted_attr_name}") do |value|
+          send(temp_sentry.crypted_attr_name).instance_variable_get('@instance')[temp_sentry.crypted_attr_name.to_s] = value
+          nil
+        end
       
         define_method("#{temp_sentry.attr_name}=") do |value|
           decrypted_values[temp_sentry.attr_name] = value
