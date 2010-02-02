@@ -19,8 +19,10 @@ module ActiveRecord # :nodoc:
           return nil if send("#{temp_sentry.crypted_attr_name}").nil?
           key = optional.shift
           out = send("#{temp_sentry.crypted_attr_name}").decrypt(key)
-          #out = nil if out == "*encrypted*" # This is from Strongbox
-          decrypted_values[temp_sentry.attr_name] = out unless out == "*encrypted*" # This is from Strongbox
+          # Strongbox returns the string "*encrypted*" if the field is still
+          # locked - make this more Sentry-like by returning nil instead
+          out = nil if out == "*encrypted*"
+          decrypted_values[temp_sentry.attr_name] = out
           out
         end
         
