@@ -7,7 +7,7 @@ module ActiveRecord # :nodoc:
     module ClassMethods
       def strongbox_encrypts(attr_name, crypted_attr_name = nil)
         temp_sentry = ::ActiveRecord::StrongboxSentryCallback.new(attr_name, crypted_attr_name)
-        before_validation temp_sentry
+        before_save temp_sentry
         after_save temp_sentry
       
         define_method(temp_sentry.attr_name) do |*optional|

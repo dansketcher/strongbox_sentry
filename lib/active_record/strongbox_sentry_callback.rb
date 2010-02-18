@@ -7,7 +7,7 @@ module ActiveRecord
     end
   
     # Performs encryption on before_validation Active Record callback
-    def before_validation(model)
+    def before_save(model)
       return if model.send(@attr_name).blank?
       model.send("#{@crypted_attr_name}=", model.send(@attr_name))
     end
